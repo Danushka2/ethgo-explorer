@@ -34,10 +34,10 @@ var serveCmd = &cobra.Command{
 
 		// ##################################################################
 
-		var ethClientHost = "https://mainnet.infura.io/v3/45065177300b42e7881cd81beca1a780"
+		var ETH_CLIENT_HOST = viper.GetString("ETH_CLIENT_HOST")
 
 		fmt.Println("✦ Conneting to the eth client")
-		client, err := ethclient.DialContext(context.Background(), ethClientHost)
+		client, err := ethclient.DialContext(context.Background(), ETH_CLIENT_HOST)
 		if err != nil {
 			panic(err)
 		}
@@ -48,7 +48,7 @@ var serveCmd = &cobra.Command{
 			log.Fatalf("Error to get a block: %v", err)
 		}
 
-		fmt.Println(block)
+		fmt.Println(block.Number())
 
 		// ##################################################################
 
