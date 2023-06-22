@@ -1,13 +1,16 @@
 package commands
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/Danushka2/ethgo-explorer/pkg/middlewares"
 	"github.com/Danushka2/ethgo-explorer/pkg/routes"
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -31,8 +34,21 @@ var serveCmd = &cobra.Command{
 
 		// ##################################################################
 
+		var ethClientHost = "https://mainnet.infura.io/v3/45065177300b42e7881cd81beca1a780"
+
 		fmt.Println("✦ Conneting to the eth client")
+		client, err := ethclient.DialContext(context.Background(), ethClientHost)
+		if err != nil {
+			panic(err)
+		}
 		fmt.Println("✦ Conneted to the eth client")
+
+		block, err := client.BlockByNumber(context.Background(), nil)
+		if err != nil {
+			log.Fatalf("Error to get a block: %v", err)
+		}
+
+		fmt.Println(block)
 
 		// ##################################################################
 
