@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -10,7 +9,8 @@ import (
 
 	"github.com/Danushka2/ethgo-explorer/pkg/middlewares"
 	"github.com/Danushka2/ethgo-explorer/pkg/routes"
-	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/Danushka2/ethgo-explorer/pkg/config"
+	"github.com/Danushka2/ethgo-explorer/pkg/controllers"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -32,24 +32,13 @@ var serveCmd = &cobra.Command{
 			os.Exit(0)
 		}()
 
-		// ##################################################################
-
-		var ETH_CLIENT_HOST = viper.GetString("ETH_CLIENT_HOST")
-
-		fmt.Println("✦ Conneting to the eth client")
-		client, err := ethclient.DialContext(context.Background(), ETH_CLIENT_HOST)
+		// ##################################################################		
+		client, err := config.NewEthereumClient()
 		if err != nil {
-			panic(err)
-		}
-		fmt.Println("✦ Conneted to the eth client")
-
-		block, err := client.BlockByNumber(context.Background(), nil)
-		if err != nil {
-			log.Fatalf("Error to get a block: %v", err)
+			log.Fatalf("Unable to connect: %v", err)
 		}
 
-		fmt.Println(block.Number())
-
+		controllers.SetEthClient(client)
 		// ##################################################################
 
 		r := gin.Default()
@@ -64,7 +53,7 @@ var serveCmd = &cobra.Command{
 		r.Use(middlewares.RequestIDMiddleware())
 
 		routes.RootRoutes(r)
-		routes.UserRoutes(r)
+		routes.AddressRoutes(r)
 
 		r.NoRoute(func(c *gin.Context) {
 			c.JSON(404, gin.H{

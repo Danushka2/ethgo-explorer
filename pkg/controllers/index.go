@@ -3,8 +3,15 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gin-gonic/gin"
 )
+
+var ethereumClient *ethclient.Client
+
+func SetEthClient(client *ethclient.Client) {
+	ethereumClient = client
+}
 
 func HealthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
