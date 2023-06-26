@@ -11,6 +11,5 @@ var AddressRoutes = func(router *gin.Engine) {
 	{
 		addressV1.POST("/new", controllers.CreateAddress)
 		addressV1.GET("/info", controllers.AddressInfo)
-		addressV1.GET("/block", controllers.BlockInfo)
 	}
 }

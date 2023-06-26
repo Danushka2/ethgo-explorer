@@ -54,6 +54,7 @@ var serveCmd = &cobra.Command{
 
 		routes.RootRoutes(r)
 		routes.AddressRoutes(r)
+		routes.BlockRoutes(r)
 
 		r.NoRoute(func(c *gin.Context) {
 			c.JSON(404, gin.H{
