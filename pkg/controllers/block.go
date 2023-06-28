@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"math/big"
 	"net/http"
@@ -8,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/Danushka2/ethgo-explorer/pkg/services"
 	"github.com/Danushka2/ethgo-explorer/pkg/models"
+	"github.com/Danushka2/ethgo-explorer/pkg/util"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 func GetBlockInfo(c *gin.Context) {
@@ -26,6 +29,26 @@ func GetBlockInfo(c *gin.Context) {
 	block, err := services.GetBlockByNumber(ethereumClient, blockValue)
 	if err != nil {
 		log.Fatalf("Error to get a block: %v", err)
+	}
+
+	for _, tx := range block.Transactions() {
+		fmt.Println("Transaction Hash:", tx.Hash().Hex())
+
+		from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx) 
+		if err != nil {
+			fmt.Println("From:", err)
+		}else{
+			fmt.Println("From:", from)
+		}
+
+		fmt.Println("To:", tx.To().Hex())
+		fmt.Println("Value:", tx.Value().String())
+		fmt.Println("Value Eth:", util.GetEthValue(tx.Value()))
+		fmt.Println("Gas Limit:", tx.Gas())
+		fmt.Println("Gas Price:", tx.GasPrice().String())
+		fmt.Println("Gas Price Eth:", util.GetEthValue(tx.GasPrice()))
+		// fmt.Println("Input Data:", string(tx.Data()))
+		fmt.Println("---------------------------------------------------")
 	}
 
 	response := gin.H{
