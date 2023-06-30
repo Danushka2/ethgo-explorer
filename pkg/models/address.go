@@ -1,6 +1,15 @@
 package models
 
-type Address struct {
-	ID      string
-	Balance float64
+import (
+	"math/big"
+)
+
+type GetAddressInfo struct {
+	Address      string
+}
+
+type AddressInfo struct {
+	Address string
+	Balance *big.Float
+	Nonce 	*uint64
 }
