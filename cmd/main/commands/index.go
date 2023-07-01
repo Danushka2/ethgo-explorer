@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	password string
 	cfgFile string
 	rootCmd = &cobra.Command{
 		Use:   "ethgo-explorer",
@@ -22,7 +23,10 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "config.yaml", "config file (default is $PWD/config.yaml)")
 
 	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(addressCmd)
 	rootCmd.AddCommand(bgCmd)
+
+	addressCmd.Flags().StringVarP(&password, "password", "n", "", "Password for the keystore")
 }
 
 func initConfig() {

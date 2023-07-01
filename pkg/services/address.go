@@ -31,7 +31,6 @@ func GetAddressNonce(client *ethclient.Client, address common.Address) (*uint64,
 
 
 func CreateWalletWithKeystore(password string) {
-	// Generate a new Ethereum wallet
 	ks := keystore.NewKeyStore("./keystore", keystore.StandardScryptN, keystore.StandardScryptP)
 
 	account, err := ks.NewAccount(password)
@@ -42,5 +41,6 @@ func CreateWalletWithKeystore(password string) {
 
 	fmt.Println("New account created:")
 	fmt.Println("Address:", account.Address.Hex())
+	fmt.Println("Password:", password)
 	fmt.Println("URL:", account.URL)
 }
