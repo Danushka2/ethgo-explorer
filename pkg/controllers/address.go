@@ -40,12 +40,3 @@ func AddressInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, addressInfo)
 }
 
-func CreateAddress(c *gin.Context) {
-	response := gin.H{
-		"field1": "field1",
-		"field2": "field2",
-		"field3": "field3",
-	}
-
-	c.JSON(http.StatusOK, response)
-}

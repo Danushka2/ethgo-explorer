@@ -9,7 +9,6 @@ import (
 var AddressRoutes = func(router *gin.Engine) {
 	addressV1 := router.Group("/api/v1/address")
 	{
-		addressV1.POST("/new", controllers.CreateAddress)
 		addressV1.GET("/info", controllers.AddressInfo)
 	}
 }
