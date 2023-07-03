@@ -9,10 +9,18 @@ import (
 
 )
 
-func GetTransactionByHash(client *ethclient.Client, txHash common.Hash) (*types.Transaction, bool, error){
-	transaction, isPending, err := client.TransactionByHash(context.Background(), txHash)
+type TransactionClient struct {
+	Client *ethclient.Client
+}
+
+func (trClient TransactionClient) GetTransactionByHash(txHash common.Hash) (*types.Transaction, bool, error){
+	transaction, isPending, err := trClient.Client.TransactionByHash(context.Background(), txHash)
 	if err != nil {
 		return nil, false, err
 	}
 	return transaction, isPending, nil
+}
+
+type TransactionServicesIn interface {
+	GetTransactionByHash(txHash common.Hash) (*types.Transaction, bool, error)
 }

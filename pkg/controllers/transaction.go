@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var txInterface services.TransactionServicesIn
+
 func TransactionInfo(c *gin.Context) {
 	var reqTx models.GetTransactionInfo
 
@@ -21,8 +23,7 @@ func TransactionInfo(c *gin.Context) {
 
 	txHash := common.HexToHash(reqTx.Transaction)
 
-	// Retrieve the transaction details
-	tx, isPending, err := services.GetTransactionByHash(ethereumClient, txHash)
+	tx, isPending, err := txInterface.GetTransactionByHash(txHash)
 	if err != nil {
 		customErrorResponse(c, err.Error(), http.StatusBadRequest)
 	}
@@ -45,4 +46,8 @@ func TransactionInfo(c *gin.Context) {
 	
 		c.JSON(http.StatusOK, transactionInfo)
 	}
+}
+
+func NewTransactionServicesIn(t services.TransactionServicesIn){
+	txInterface = t
 }

@@ -9,6 +9,7 @@ import (
 
 	"github.com/Danushka2/ethgo-explorer/pkg/middlewares"
 	"github.com/Danushka2/ethgo-explorer/pkg/routes"
+	"github.com/Danushka2/ethgo-explorer/pkg/services"
 	"github.com/Danushka2/ethgo-explorer/pkg/config"
 	"github.com/Danushka2/ethgo-explorer/pkg/controllers"
 	"github.com/gin-gonic/gin"
@@ -39,6 +40,12 @@ var serveCmd = &cobra.Command{
 		}
 
 		controllers.SetEthClient(client)
+
+		txCline := services.TransactionClient{
+			Client: client,
+		}
+		
+		controllers.NewTransactionServicesIn(txCline)
 		// ##################################################################
 
 		r := gin.Default()
