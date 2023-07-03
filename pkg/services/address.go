@@ -10,8 +10,13 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func GetAddressBalance(client *ethclient.Client, address common.Address) (*big.Int, error){
-	balance, err := client.BalanceAt(context.Background(), address, nil)
+type AddressClient struct {
+	Client *ethclient.Client
+}
+
+
+func (adClient AddressClient) GetAddressBalance(address common.Address) (*big.Int, error){
+	balance, err := adClient.Client.BalanceAt(context.Background(), address, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -20,8 +25,8 @@ func GetAddressBalance(client *ethclient.Client, address common.Address) (*big.I
 }
 
 
-func GetAddressNonce(client *ethclient.Client, address common.Address) (*uint64, error){
-	nonce, err := client.PendingNonceAt(context.Background(), address)
+func (adClient AddressClient) GetAddressNonce(address common.Address) (*uint64, error){
+	nonce, err := adClient.Client.PendingNonceAt(context.Background(), address)
 	if err != nil {
 		return nil, err
 	}
@@ -43,4 +48,9 @@ func CreateWalletWithKeystore(password string) {
 	fmt.Println("Address:", account.Address.Hex())
 	fmt.Println("Password:", password)
 	fmt.Println("URL:", account.URL)
+}
+
+type AddressServicesIn interface {
+	GetAddressBalance(address common.Address) (*big.Int, error)
+	GetAddressNonce(address common.Address) (*uint64, error)
 }

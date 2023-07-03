@@ -41,11 +41,11 @@ var serveCmd = &cobra.Command{
 
 		controllers.SetEthClient(client)
 
-		txCline := services.TransactionClient{
-			Client: client,
-		}
-		
-		controllers.NewTransactionServicesIn(txCline)
+		txClient := services.TransactionClient{Client: client}
+		adClient := services.AddressClient{Client: client}
+
+		controllers.NewTransactionServicesIn(txClient)
+		controllers.NewAddressServicesIn(adClient)
 		// ##################################################################
 
 		r := gin.Default()

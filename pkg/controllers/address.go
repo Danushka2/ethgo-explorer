@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var adInterface services.AddressServicesIn
+
 func AddressInfo(c *gin.Context) {
 	var address models.GetAddressInfo
 
@@ -21,12 +23,12 @@ func AddressInfo(c *gin.Context) {
 	// Convert the wallet address string to a common.Address type
 	walletAddress := common.HexToAddress(address.Address)
 	
-	balance, err := services.GetAddressBalance(ethereumClient, walletAddress)
+	balance, err := adInterface.GetAddressBalance(walletAddress)
 	if err != nil {
 		customErrorResponse(c, err.Error(), http.StatusBadRequest)
 	}
 
-	nonce, err := services.GetAddressNonce(ethereumClient, walletAddress)
+	nonce, err := adInterface.GetAddressNonce(walletAddress)
 	if err != nil {
 		customErrorResponse(c, err.Error(), http.StatusBadRequest)
 	}
@@ -38,5 +40,9 @@ func AddressInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, addressInfo)
+}
+
+func NewAddressServicesIn(a services.AddressServicesIn){
+	adInterface = a
 }
 
