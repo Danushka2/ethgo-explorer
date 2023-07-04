@@ -39,13 +39,13 @@ var serveCmd = &cobra.Command{
 			log.Fatalf("Unable to connect: %v", err)
 		}
 
-		controllers.SetEthClient(client)
-
 		txClient := services.TransactionClient{Client: client}
 		adClient := services.AddressClient{Client: client}
+		bckClient := services.BlockClient{Client: client}
 
 		controllers.NewTransactionServicesIn(txClient)
 		controllers.NewAddressServicesIn(adClient)
+		controllers.NewBlockServicesIn(bckClient)
 		// ##################################################################
 
 		r := gin.Default()

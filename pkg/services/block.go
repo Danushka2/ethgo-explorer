@@ -8,12 +8,21 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
-func GetBlockByNumber(client *ethclient.Client, number *big.Int) (*types.Block, error){
+type BlockClient struct {
+	Client *ethclient.Client
+}
 
-	block, err := client.BlockByNumber(context.Background(), number)
+
+func (bckClient BlockClient) GetBlockByNumber(number *big.Int) (*types.Block, error){
+	block, err := bckClient.Client.BlockByNumber(context.Background(), number)
 	if err != nil {
 		return nil, err
 	}
 
 	return block, nil
+}
+
+
+type BlockServicesIn interface {
+	GetBlockByNumber(number *big.Int) (*types.Block, error)
 }

@@ -13,6 +13,7 @@ type TransactionClient struct {
 	Client *ethclient.Client
 }
 
+
 func (trClient TransactionClient) GetTransactionByHash(txHash common.Hash) (*types.Transaction, bool, error){
 	transaction, isPending, err := trClient.Client.TransactionByHash(context.Background(), txHash)
 	if err != nil {
@@ -20,6 +21,7 @@ func (trClient TransactionClient) GetTransactionByHash(txHash common.Hash) (*typ
 	}
 	return transaction, isPending, nil
 }
+
 
 type TransactionServicesIn interface {
 	GetTransactionByHash(txHash common.Hash) (*types.Transaction, bool, error)

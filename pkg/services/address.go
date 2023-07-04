@@ -24,7 +24,6 @@ func (adClient AddressClient) GetAddressBalance(address common.Address) (*big.In
 	return balance, nil
 }
 
-
 func (adClient AddressClient) GetAddressNonce(address common.Address) (*uint64, error){
 	nonce, err := adClient.Client.PendingNonceAt(context.Background(), address)
 	if err != nil {
@@ -33,7 +32,6 @@ func (adClient AddressClient) GetAddressNonce(address common.Address) (*uint64, 
 	
 	return &nonce, nil
 }
-
 
 func CreateWalletWithKeystore(password string) {
 	ks := keystore.NewKeyStore("./keystore", keystore.StandardScryptN, keystore.StandardScryptP)
@@ -49,6 +47,7 @@ func CreateWalletWithKeystore(password string) {
 	fmt.Println("Password:", password)
 	fmt.Println("URL:", account.URL)
 }
+
 
 type AddressServicesIn interface {
 	GetAddressBalance(address common.Address) (*big.Int, error)

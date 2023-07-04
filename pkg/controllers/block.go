@@ -13,6 +13,8 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
+var bckInterface services.BlockServicesIn
+
 func GetBlockInfo(c *gin.Context) {
 	var blockInfo models.BlockInfo
 	var blockValue *big.Int
@@ -26,7 +28,7 @@ func GetBlockInfo(c *gin.Context) {
 		blockValue = &blockInfo.Number
 	}
 
-	block, err := services.GetBlockByNumber(ethereumClient, blockValue)
+	block, err := bckInterface.GetBlockByNumber(blockValue)
 	if err != nil {
 		log.Fatalf("Error to get a block: %v", err)
 	}
@@ -61,4 +63,8 @@ func GetBlockInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+func NewBlockServicesIn(b services.BlockServicesIn){
+	bckInterface = b
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	// "fmt"
 	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
