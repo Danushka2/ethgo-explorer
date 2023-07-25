@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/Danushka2/ethgo-explorer/pkg/services"
 )
@@ -16,7 +14,7 @@ var addressCmd = &cobra.Command{
 		if password != "" {
 			services.CreateWalletWithKeystore(password)
 		}else {
-			fmt.Println("--password flag is missing")
+			services.GenerateWallet()
 		}
 		
 		return nil

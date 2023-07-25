@@ -4,10 +4,14 @@ import (
 	"math/big"
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
+
 )
 
 type AddressClient struct {
@@ -38,14 +42,23 @@ func CreateWalletWithKeystore(password string) {
 
 	account, err := ks.NewAccount(password)
 	if err != nil {
-		fmt.Println("Failed to create new account:", err)
-		return
+		log.Fatal(err)
 	}
 
 	fmt.Println("New account created:")
 	fmt.Println("Address:", account.Address.Hex())
 	fmt.Println("Password:", password)
 	fmt.Println("URL:", account.URL)
+}
+
+func GenerateWallet() {
+	pvk, _ := crypto.GenerateKey()
+
+	pvData := crypto.FromECDSA(pvk)
+	pbData := crypto.FromECDSAPub(&pvk.PublicKey)
+	
+	fmt.Println("Private:", hexutil.Encode(pvData))
+	fmt.Println("Public:", hexutil.Encode(pbData))
 }
 
 
