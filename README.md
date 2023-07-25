@@ -10,3 +10,8 @@ go mod init github.com/Danushka2/ethgo-explorer
 ```bash
 go mod tidy
 ```
+
+## To Create a Address with keystore file with password
+```bash
+go run cmd/main/main.go address --password yourpassword
+```
